@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from main import app
 import main
+import requests
+import config
 
 client = TestClient(app)
 
@@ -36,4 +38,21 @@ def test_weather_class():
             "avg temp:": 15.00,
             "humidity:": 44 }
     
-test_weather_class()
+def test_link():
+    app = FastAPI()
+    API_KEY = config.get_API_KEY()
+    units = config.get_units()
+    city = "London"  # Replace with the desired city
+    base_url = "https://api.openweathermap.org/data/2.5/weather"
+    params = {
+        "q": city,
+        "units": units,  
+        "appid": API_KEY
+    }
+
+    response = requests.get(base_url, params=params)
+    assert response.status_code == 200  # Check if the response was successful
+
+    weather_data = response.json()  # Use the response.json() method to parse the JSON response
+    # Do something with the weather_data
+
