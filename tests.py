@@ -57,7 +57,7 @@ def test_link():
     response = requests.get(base_url, params=params)
     assert response.status_code == 200  # Check if the response was successful
 
-    weather_data = response.json()  # Use the response.json() method to parse the JSON response
+    # weather_data = response.json()  # Use the response.json() method to parse the JSON response
     # Do something with the weather_data
 
 
