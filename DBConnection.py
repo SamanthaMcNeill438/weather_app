@@ -8,5 +8,5 @@ class DBConnection:
         if cls._connection_string is None:
             config = configparser.ConfigParser()
             config.read('config.ini')  # or any other config file
-            cls._connection_string = config['StockMgmt']['ConnectionString']
+            cls._connection_string = config['WEATHERAPP']['ConnectionString']
         return cls._connection_string
