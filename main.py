@@ -51,6 +51,7 @@ async def get_weather(city: str):
 
     if weather_data["cod"] != "200": 
         HTTPException(status_code=weather_data, detail='An error occured')
+        return {"City not found"}
         print("stopped working")
     return get_data(weather_data)
     
