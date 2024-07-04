@@ -7,7 +7,7 @@ import requests
 import WeatherData
 import GitignoreAccessor
 
-ignored_files = GitignoreAccessor()
+ignored_files = GitignoreAccessor('.gitignore')
 config = ignored_files.get_ignored_files()
 
 app = FastAPI()

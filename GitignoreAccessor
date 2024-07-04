@@ -14,7 +14,3 @@ class GitignoreAccessor:
         ignored_files = self.read_gitignore()
         return [file for file in ignored_files if not file.startswith('#')]
 
-# Usage
-gitignore_accessor = GitignoreAccessor()
-ignored_files = gitignore_accessor.get_ignored_files()
-print(ignored_files)
