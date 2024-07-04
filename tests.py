@@ -1,4 +1,5 @@
 import pytest
+import unittest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from main import app
@@ -43,7 +44,6 @@ def test_weather_class():
     
 
 def test_link():
-    app = FastAPI()
     API_KEY = config.get_API_KEY()
     units = config.get_units()
     city = "London"  # Replace with the desired city
