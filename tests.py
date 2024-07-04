@@ -34,7 +34,6 @@ def test_weather_class():
             "min temp:": 10,
             "max temp:": 20,
             "avg temp:": 15.00,
-            "humidity:": 44
-        }
+            "humidity:": 44 }
     
 test_weather_class()
