@@ -6,12 +6,15 @@ import main
 import requests
 import config
 
+
 client = TestClient(app)
+
 
 def test_read_main():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"msg": "Hello World"}
+
 
 def test_get_weather():
     city = "Belfast"
@@ -38,6 +41,7 @@ def test_weather_class():
             "avg temp:": 15.00,
             "humidity:": 44 }
     
+
 def test_link():
     app = FastAPI()
     API_KEY = config.get_API_KEY()
@@ -56,3 +60,5 @@ def test_link():
     weather_data = response.json()  # Use the response.json() method to parse the JSON response
     # Do something with the weather_data
 
+
+test_link()
