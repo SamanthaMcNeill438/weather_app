@@ -3,17 +3,14 @@
 from typing import Union
 from fastapi import FastAPI, HTTPException
 import json
-import requests 
+import requests
+import config
 import WeatherData
-import GitignoreAccessor
-
-ignored_files = GitignoreAccessor('.gitignore')
-config = ignored_files.get_ignored_files()
 
 app = FastAPI()
 API_KEY = config.get_API_KEY()
 units = config.get_units()
-data : object
+
 
 
 @app.get("/")
