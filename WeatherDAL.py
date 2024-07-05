@@ -1,6 +1,6 @@
 import DBConnection
 import WeatherData
-import main
+import mainsql
 import sqlite3 
 
 class WeatherDAL:
@@ -26,7 +26,7 @@ class WeatherDAL:
     def add_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL sp_addData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
+        cur.execute('CALL mainsql.sp_addData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
         cur.commit()
         cur.close()
         connection.close()
@@ -35,7 +35,7 @@ class WeatherDAL:
     def search_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL sp_searchData(%s))', (self.City))
+        cur.execute('CALL mainsql.sp_searchData(%s))', (self.City))
         cur.commit()
         cur.close()
         connection.close()
@@ -44,7 +44,7 @@ class WeatherDAL:
     def update_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL sp_updateData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
+        cur.execute('CALL mainsql.sp_updateData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
         cur.commit()
         cur.close()
         connection.close()
@@ -53,7 +53,7 @@ class WeatherDAL:
     def delete_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL sp_deleteData(%s))', (self.City))
+        cur.execute('CALL mainsql.sp_deleteData(%s))', (self.City))
         cur.commit()
         cur.close()
         connection.close()
