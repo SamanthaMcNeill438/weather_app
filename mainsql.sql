@@ -1,5 +1,5 @@
 -- CREATE DATABASE WEATHERAPP
--- DROP TABLE Weather
+DROP TABLE Weather
 
 -- Create Table
 CREATE TABLE Weather(
