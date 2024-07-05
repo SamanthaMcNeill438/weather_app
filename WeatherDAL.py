@@ -5,7 +5,6 @@ import main
 
 class WeatherDAL:
     
-
     def add_weather_data(response):
         connection = DBConnection._connection_string
 
