@@ -7,45 +7,6 @@ import requests
 import config
 import WeatherData 
 
-class WeatherData:
-    #city: str
-    min_temp = 0
-    max_temp = 0
-    avg_temp = 0
-    humidity = 0
-
-    def __init__(self, min_temp, max_temp, humidity):
-        #self.city = city
-        self.min_temp = min_temp
-        self.max_temp = max_temp
-        self.avg_temp = round(((min_temp + max_temp)/2),2)
-        self.humidity = humidity
-    
-
-    def get_weather_data(self):
-        #     """
-        # Extracts the weather data from the API response.
-
-        # Args:
-        #     weather_data (dict): The API response data.
-
-        # Returns:
-        #     dict: A dictionary with keys "min temp:", "max temp:", "avg temp:", and "humidity:".
-
-        # Example:
-        #     >>> weather_data = {"main": {"temp_min": 10, "temp_max": 20, "humidity": 60}}
-        #     >>> get_data(weather_data)
-        #     {"min temp:": 10, "max temp:": 20, "avg temp:": 15.0, "humidity:": 60}
-        # """
-        return {
-            "min temp:": self.min_temp,
-            "max temp:": self.max_temp,
-            "avg temp:": self.avg_temp,
-            "humidity:": self.humidity
-        }
-
-
-    
 
 app = FastAPI()
 API_KEY = config.get_API_KEY()
@@ -58,22 +19,7 @@ def read_root():
 
 @app.get("/weather/{city}")
 async def get_weather(city: str):
-    # """
-    # Returns the weather data for a given city.
-
-    # Args:
-    #     city (str): The city for which to retrieve the weather data.
-
-    # Returns:
-    #     dict: A dictionary with keys "min temp:", "max temp:", "avg temp:", and "humidity:".
-
-    # Raises:
-    #     HTTPException: If the API request fails or the city is not found.
-
-    # Example:
-    #     >>> get_weather("London")
-    #     {"min temp:": 10.0, "max temp:": 20.0, "avg temp:": 15.0, "humidity:": 60}
-    # """
+    
     base_url = "https://api.openweathermap.org/data/2.5/weather"
     params = {
         "q": city,
@@ -89,26 +35,25 @@ async def get_weather(city: str):
 
     if weather_data["cod"] != "200": 
         #HTTPException(status_code=weather_data, detail='An error occured')
-        return {"City not found"}
-        #ßprint("stopped working")
+        #return {"City not found"}
+        print("stopped working")
     return get_data(weather_data)
-    
     
 
 def get_data(weather_data):
     min_temp = weather_data["main"]["temp_min"]
     max_temp = weather_data["main"]["temp_max"]
-    #avg_temp = round(((min_temp + max_temp)/2),2)
+    avg_temp = round(((min_temp + max_temp)/2),2)
     humidity = weather_data["main"]["humidity"]
     
-    data = WeatherData(min_temp, max_temp, humidity)
-    return data.get_weather_data(data)
-    # return {
-    #     "min temp:": min_temp,
-    #     "max temp:": max_temp,
-    #     "avg temp:": avg_temp,
-    #     "humidity:": humidity
-    # }
+    # data = WeatherData(min_temp, max_temp, humidity)
+    # return WeatherData.get_weather_data(data)
+    return {
+        "min temp:": min_temp,
+        "max temp:": max_temp,
+        "avg temp:": avg_temp,
+        "humidity:": humidity
+    }
 
     
 
