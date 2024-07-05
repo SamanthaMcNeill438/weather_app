@@ -5,11 +5,16 @@ class WeatherData:
     avg_temp = 0
     humidity = 0
 
+
+    def get_avg_temp(min_temperature, max_temperature):
+        return round(((min_temperature + max_temperature)/2),2)
+    
+
     def __init__(self, min_temp, max_temp, humidity):
         #self.city = city
         self.min_temp = min_temp
         self.max_temp = max_temp
-        self.avg_temp = round(((min_temp + max_temp)/2),2)
+        self.avg_temp = get_avg_temp(min_temp, max_temp)
         self.humidity = humidity
     
 
@@ -34,3 +39,7 @@ class WeatherData:
             "avg temp:": self.avg_temp,
             "humidity:": self.humidity
         }
+
+
+
+
