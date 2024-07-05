@@ -1,12 +1,13 @@
 import DBConnection
-import WeatherDataV1
-import mainsql
+import WeatherData
 import sqlite3 
 
 class WeatherDAL:
 
     connect = DBConnection()
+    connect.initialise_database()
     connection = connect.get_connection_string()
+    
     my_cursor = DBConnection.cursor()
     City : str
     Min_Temp : float
@@ -23,6 +24,10 @@ class WeatherDAL:
         self.Humidity = humidity
 
     
+    def __init__(self, city):
+        self.City = city
+
+
     def add_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
