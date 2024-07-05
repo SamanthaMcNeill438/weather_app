@@ -17,8 +17,13 @@ def test_read_main():
     assert response.json() == {"msg": "Hello World"}
 
 
-def test_get_weather():
+@pytest.fixture
+def weather_fixture():
     city = "Belfast"
+    
+
+
+def test_get_weather(weather_fixture):
     response = client.get("/weather/{city}")
     assert response.status_code == 200
     {
