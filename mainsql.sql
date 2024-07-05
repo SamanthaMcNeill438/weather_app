@@ -50,11 +50,13 @@ CREATE PROCEDURE sp_updateData(
         Avg_Temp = @Avg_Temp,
         Humidity = @Humidity
     WHERE City LIKE @City
-
 )
+
 
 -- Search database for record where city == user specifiied value, if found delete record
 CREATE PROCEDURE sp_deleteData(
     @City nvarchar
+    AS
+    DELETE FROM Weather WHERE City LIKE @City
 )
 
