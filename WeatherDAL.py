@@ -1,8 +1,12 @@
 import DBConnection
+import WeatherData
+import main
+import mysql.connector  
 
 class WeatherDAL:
     
-    connection = DBConnection.connectionString
+    dbconnection = mysql.connector.connect(host = "<host-name> ", user = "<username>" , passwd = "<password>" )  
+    my_cursor = dbconnection.cursor()
 
     def add_weather_data(response):
         connection = DBConnection._connection_string
