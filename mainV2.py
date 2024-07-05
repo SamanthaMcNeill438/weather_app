@@ -1,6 +1,6 @@
 #gets the min, max and avg temp and humidity for a user specified city
 from typing import Union
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 import json
 import requests
 import config
