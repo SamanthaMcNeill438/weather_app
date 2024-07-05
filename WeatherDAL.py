@@ -14,8 +14,9 @@ class WeatherDAL:
         # create update function    
         # create searches/queries
 
-    # DATABASE QUERIES
-    # cur.execute('CALL sp_searchData(%s))', (City))
+    # DATABASE QUERIES 
     # cur.execute('CALL sp_addData(%s, %d, %d, %d, %d))', (City, Min_Temp, Max_Temp, Avg_Temp, Humiditiy))
-
+    # cur.execute('CALL sp_searchData(%s))', (City))
+    # cur.execute('CALL sp_updateData(%s, %d, %d, %d, %d))', (City, Min_Temp, Max_Temp, Avg_Temp, Humiditiy))
+    # cur.execute('CALL sp_deleteData(%s))', (City))
     # cur.commit()
