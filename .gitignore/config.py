@@ -5,3 +5,10 @@ def get_API_KEY():
 
 def get_units():
     return "metric"
+
+def get_params(city):
+    params = {
+        "q": city,
+        "units": get_units(),  
+        "appid": get_API_KEY()
+    }

@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 import json
 import requests
 import config
-import WeatherData 
+import WeatherDataV1 
 
 
 app = FastAPI()

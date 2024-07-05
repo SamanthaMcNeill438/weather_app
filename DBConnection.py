@@ -1,6 +1,6 @@
 import configparser
 import DBConnection
-import WeatherData
+import WeatherDataV1
 import main
 import sqlite3 
 
