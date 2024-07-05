@@ -1,0 +1,299 @@
+smceill@Keith-Cs-MacBook-Pro weatherAPIApp % git add .                                           
+smceill@Keith-Cs-MacBook-Pro weatherAPIApp % git commit -m "Connecting DAL to DB and WeatherData"
+[main fe73d81] Connecting DAL to DB and WeatherData
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+smceill@Keith-Cs-MacBook-Pro weatherAPIApp % git push --set-upstream origin main                 
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 311 bytes | 311.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/SamanthaMcNeill438/weather_app.git
+   96b29ee..fe73d81  main -> main
+branch 'main' set up to track 'origin/main'.
+smceill@Keith-Cs-MacBook-Pro weatherAPIApp % python3 -m uvicorn mainV2:app --reload                                       
+INFO:     Will watch for changes in these directories: ['/Users/smceill/Documents/weatherAPIApp']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [18872] using WatchFiles
+-- CREATE DATABASE WEATHERAPP
+DROP TABLE Weather
+
+-- Create Table
+CREATE TABLE Weather(
+    City nvarchar(50) not null,
+    Min_Temp float not null,
+    Max_Temp float not null,
+    Avg_Temp float not null, 
+    Humidity float not null,
+    CONSTRAINT [PK_City] PRIMARY KEY ([City])
+)
+
+-- Add record to the database
+CREATE PROCEDURE sp_addData(
+    @City nvarchar(50),
+    @Min_Temp float,
+    @Max_Temp float,
+    @Avg_Temp float,
+    @Humidity float
+    AS
+    INSERT INTO Weather(City, Min_Temp, Max_Temp, Avg_Temp, Humidity)
+    VALUES (@City, @Min_Temp, @Max_Temp, @Avg_Temp, @Humidity)
+) 
+
+-- Search database for record where city == user specifiied value
+CREATE PROCEDURE sp_searchData(
+    @City nvarchar(50)
+    AS
+        SELECT Min_Temp, Max_Temp, Avg_Temp, Humidity 
+        FROM Weather 
+        WHERE City LIKE @City
+) 
+
+-- Search database for record to update data
+CREATE PROCEDURE sp_updateData(
+    @City nvarchar(50),
+    @Min_Temp float,
+    @Max_Temp float,
+    @Avg_Temp float,
+    @Humidity float
+    AS
+    UPDATE Weather
+    SET City = @City,
+        Min_Temp = @Min_Temp,
+        Max_Temp = @Max_Temp,
+        Avg_Temp = @Avg_Temp,
+        Humidity = @Humidity
+    WHERE City LIKE @City
+)
+
+
+-- Search database for record where city == user specifiied value, if found delete record
+CREATE PROCEDURE sp_deleteData(
+    @City nvarchar(50)
+    AS
+    DELETE FROM Weather WHERE City LIKE @City
+)
+
+
+Process SpawnProcess-1:
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 65, in run
+    return asyncio.run(self.serve(sockets=sockets))
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1517, in uvloop.loop.Loop.run_until_complete
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 69, in serve
+    await self._serve(sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 76, in _serve
+    config.load()
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/config.py", line 434, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/smceill/Documents/weatherAPIApp/mainV2.py", line 7, in <module>
+    import WeatherData
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherData.py", line 1, in <module>
+    import WeatherDAL
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherDAL.py", line 6, in <module>
+    class WeatherDAL:
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherDAL.py", line 12, in WeatherDAL
+    my_cursor = DBConnection.cursor()
+AttributeError: type object 'DBConnection' has no attribute 'cursor'
+WARNING:  WatchFiles detected changes in 'DBConnection.py'. Reloading...
+Process SpawnProcess-2:
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 65, in run
+    return asyncio.run(self.serve(sockets=sockets))
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1517, in uvloop.loop.Loop.run_until_complete
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 69, in serve
+    await self._serve(sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 76, in _serve
+    config.load()
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/config.py", line 434, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/smceill/Documents/weatherAPIApp/mainV2.py", line 7, in <module>
+    import WeatherData
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherData.py", line 1, in <module>
+    import WeatherDAL
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherDAL.py", line 6, in <module>
+    class WeatherDAL:
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherDAL.py", line 9, in WeatherDAL
+    connect.initialise_database()
+  File "/Users/smceill/Documents/weatherAPIApp/DBConnection.py", line 18, in initialise_database
+    cursor = self.dbconnection.cursor()
+AttributeError: 'DBConnection' object has no attribute 'dbconnection'. Did you mean: 'db_connection'?
+WARNING:  WatchFiles detected changes in 'DBConnection.py'. Reloading...
+-- CREATE DATABASE WEATHERAPP
+DROP TABLE Weather
+
+-- Create Table
+CREATE TABLE Weather(
+    City nvarchar(50) not null,
+    Min_Temp float not null,
+    Max_Temp float not null,
+    Avg_Temp float not null, 
+    Humidity float not null,
+    CONSTRAINT [PK_City] PRIMARY KEY ([City])
+)
+
+-- Add record to the database
+CREATE PROCEDURE sp_addData(
+    @City nvarchar(50),
+    @Min_Temp float,
+    @Max_Temp float,
+    @Avg_Temp float,
+    @Humidity float
+    AS
+    INSERT INTO Weather(City, Min_Temp, Max_Temp, Avg_Temp, Humidity)
+    VALUES (@City, @Min_Temp, @Max_Temp, @Avg_Temp, @Humidity)
+) 
+
+-- Search database for record where city == user specifiied value
+CREATE PROCEDURE sp_searchData(
+    @City nvarchar(50)
+    AS
+        SELECT Min_Temp, Max_Temp, Avg_Temp, Humidity 
+        FROM Weather 
+        WHERE City LIKE @City
+) 
+
+-- Search database for record to update data
+CREATE PROCEDURE sp_updateData(
+    @City nvarchar(50),
+    @Min_Temp float,
+    @Max_Temp float,
+    @Avg_Temp float,
+    @Humidity float
+    AS
+    UPDATE Weather
+    SET City = @City,
+        Min_Temp = @Min_Temp,
+        Max_Temp = @Max_Temp,
+        Avg_Temp = @Avg_Temp,
+        Humidity = @Humidity
+    WHERE City LIKE @City
+)
+
+
+-- Search database for record where city == user specifiied value, if found delete record
+CREATE PROCEDURE sp_deleteData(
+    @City nvarchar(50)
+    AS
+    DELETE FROM Weather WHERE City LIKE @City
+)
+
+
+Error executing SQL script: near "CREATE": syntax error
+Process SpawnProcess-3:
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 65, in run
+    return asyncio.run(self.serve(sockets=sockets))
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1517, in uvloop.loop.Loop.run_until_complete
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 69, in serve
+    await self._serve(sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 76, in _serve
+    config.load()
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/config.py", line 434, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/smceill/Documents/weatherAPIApp/mainV2.py", line 7, in <module>
+    import WeatherData
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherData.py", line 1, in <module>
+    import WeatherDAL
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherDAL.py", line 6, in <module>
+    class WeatherDAL:
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherDAL.py", line 12, in WeatherDAL
+    my_cursor = DBConnection.cursor()
+AttributeError: type object 'DBConnection' has no attribute 'cursor'
+WARNING:  WatchFiles detected changes in 'DBConnection.py'. Reloading...
+Process SpawnProcess-4:
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 315, in _bootstrap
+    self.run()
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 65, in run
+    return asyncio.run(self.serve(sockets=sockets))
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "uvloop/loop.pyx", line 1517, in uvloop.loop.Loop.run_until_complete
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 69, in serve
+    await self._serve(sockets)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/server.py", line 76, in _serve
+    config.load()
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/config.py", line 434, in load
+    self.loaded_app = import_from_string(self.app)
+  File "/Users/smceill/Library/Python/3.10/lib/python/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/smceill/Documents/weatherAPIApp/mainV2.py", line 7, in <module>
+    import WeatherData
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherData.py", line 1, in <module>
+    import WeatherDAL
+  File "/Users/smceill/Documents/weatherAPIApp/WeatherDAL.py", line 1, in <module>
+    import DBConnection
+  File "/Users/smceill/Documents/weatherAPIApp/DBConnection.py", line 8, in <module>
+    class DBConnection:
+  File "/Users/smceill/Documents/weatherAPIApp/DBConnection.py", line 10, in DBConnection
+    db_conn = DBConnection()
+TypeError: 'module' object is not callable
