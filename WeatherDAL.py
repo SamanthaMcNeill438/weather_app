@@ -1,7 +1,7 @@
 import DBConnection
 import WeatherData
 import main
-# import mysql 
+# import sqlite3 
 
 class WeatherDAL:
     
@@ -15,4 +15,6 @@ class WeatherDAL:
         # create searches/queries
 
     # DATABASE QUERIES
-    cur.execute("SELECT Min_Temp, Max_Temp, Max_Temp, Max_Temp FROM Weather WHERE City == City")
+    # cur.execute("SELECT Min_Temp, Max_Temp, Max_Temp, Max_Temp FROM Weather WHERE City == City")
+    # cur.execute(sp_addData(City, Min_Temp, Max_Temp, Avg_Temp, Humiditiy))
+    # cur.commit()
