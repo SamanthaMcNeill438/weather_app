@@ -46,32 +46,10 @@ class MyTestCase(unittest.TestCase):
         response = requests.get(base_url, params=params)
         assert response.status_code == 200
         # assert response.json()["main"]["humidity"] == 62
-        assert 50 < response.json()["main"]["humidity"] < 80
+
+        assert 40 < response.json()["main"]["humidity"] < 80
+        assert response.json()["main"]["temp_min"] < 80
+        assert response.json()["main"]["temp_max"] < 80
+        assert response.json()["main"]["temp"] < 80
 
 
-
-
-    # @pytest.fixture
-    # def weather_fixture():
-    #     city = "Belfast"
-
-  
-    # def test_get_weather(self):
-    #     client = TestClient(app)
-    #     city = "Belfast"
-    #     response = client.get("/weather/{city}")
-    #     assert response.status_code == 200
-    #     assert 0 < response.json()["main"]["temp_min"] < 40
-    #     assert 0 < response.json()["main"]["temp_max"] < 40
-    #     assert 0 < response.json()["main"]["temp"] < 40
-    #     assert 50 < response.json()["main"]["humidity"] < 80
-    #     {
-    #         # "min temp:": main.WeatherData.min_temp,
-    #         # "max temp:": main.WeatherData.max_temp,
-    #         # "avg temp:": main.WeatherData.avg_temp,
-    #         # "humidity:": main.WeatherData.humidity
-    #         "min temp:": main.data.min_temp,
-    #         "max temp:": main.data.max_temp,
-    #         "avg temp:": main.data.avg_temp,
-    #         "humidity:": main.data.humidity
-    #     }

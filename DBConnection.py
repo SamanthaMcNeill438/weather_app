@@ -1,7 +1,7 @@
 import configparser
 
 class DBConnection:
-    _connection_string = None
+    _connection_string = mainsql.sql
 
     @classmethod
     def connection_string(cls):
