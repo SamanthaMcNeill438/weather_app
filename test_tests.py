@@ -51,5 +51,3 @@ class MyTestCase(unittest.TestCase):
         assert response.json()["main"]["temp_min"] < 80
         assert response.json()["main"]["temp_max"] < 80
         assert response.json()["main"]["temp"] < 80
-
-
