@@ -15,6 +15,7 @@ class WeatherDAL:
         # create searches/queries
 
     # DATABASE QUERIES
-    # cur.execute("SELECT Min_Temp, Max_Temp, Max_Temp, Max_Temp FROM Weather WHERE City == City")
-    # cur.execute(sp_addData(City, Min_Temp, Max_Temp, Avg_Temp, Humiditiy))
+    # cur.execute('CALL sp_searchData(%s))', (City))
+    # cur.execute('CALL sp_addData(%s, %d, %d, %d, %d))', (City, Min_Temp, Max_Temp, Avg_Temp, Humiditiy))
+
     # cur.commit()
