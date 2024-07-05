@@ -15,42 +15,8 @@ class MyTestCase(unittest.TestCase):
         client = TestClient(app)
         response = client.get("/")
         assert response.status_code == 200
-        response_data = response.json()
-        assert "msg" in response_data
-        assert response_data["msg"] == "Hello World"
+        assert response.json() == {"Hello": "World"}
 
-
-    # @pytest.fixture
-    # def weather_fixture():
-    #     city = "Belfast"
-
-    def test_get_weather(self):
-        client = TestClient(app)
-        city = "Belfast"
-        response = client.get("/weather/{city}")
-        assert response.status_code == 200
-        {
-            # "min temp:": main.WeatherData.min_temp,
-            # "max temp:": main.WeatherData.max_temp,
-            # "avg temp:": main.WeatherData.avg_temp,
-            # "humidity:": main.WeatherData.humidity
-            "min temp:": main.data.min_temp,
-            "max temp:": main.data.max_temp,
-            "avg temp:": main.data.avg_temp,
-            "humidity:": main.data.humidity
-        }
-
-
-    # def test_weather_class(self):
-    #     data: object
-    #     data = main.WeatherData(10,20,44)
-    #     response = data.get_weather_data()
-    #     assert response == {
-    #             "min temp:": 10,
-    #             "max temp:": 20,
-    #             "avg temp:": 15.00,
-    #             "humidity:": 44 }
-        
 
     def test_link(self):
         API_KEY = config.get_API_KEY()
@@ -81,3 +47,31 @@ class MyTestCase(unittest.TestCase):
         assert response.status_code == 200
         # assert response.json()["main"]["humidity"] == 62
         assert 50 < response.json()["main"]["humidity"] < 80
+
+
+
+
+    # @pytest.fixture
+    # def weather_fixture():
+    #     city = "Belfast"
+
+  
+    # def test_get_weather(self):
+    #     client = TestClient(app)
+    #     city = "Belfast"
+    #     response = client.get("/weather/{city}")
+    #     assert response.status_code == 200
+    #     assert 0 < response.json()["main"]["temp_min"] < 40
+    #     assert 0 < response.json()["main"]["temp_max"] < 40
+    #     assert 0 < response.json()["main"]["temp"] < 40
+    #     assert 50 < response.json()["main"]["humidity"] < 80
+    #     {
+    #         # "min temp:": main.WeatherData.min_temp,
+    #         # "max temp:": main.WeatherData.max_temp,
+    #         # "avg temp:": main.WeatherData.avg_temp,
+    #         # "humidity:": main.WeatherData.humidity
+    #         "min temp:": main.data.min_temp,
+    #         "max temp:": main.data.max_temp,
+    #         "avg temp:": main.data.avg_temp,
+    #         "humidity:": main.data.humidity
+    #     }
