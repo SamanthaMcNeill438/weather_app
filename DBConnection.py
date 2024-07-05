@@ -7,15 +7,19 @@ import sqlite3
 
 class DBConnection:
 
-    dbconnection = sqlite3.connect('WeatherApp.db') 
-    # my_cursor = dbconnection.cursor()
+    db_conn = DBConnection()
+    my_cursor = db_conn.my_cursor
+
+    def __init__(self):
+        self.dbconnection = sqlite3.connect('WeatherApp.db')
+        self.my_cursor = self.dbconnection.cursor()
 
     def get_connection_string(self):
         return self.dbconnection
     
     def initialise_database(self):
         # Create a cursor object
-        cursor = self.dbconnection.cursor()
+        cursor = self.my_cursor
         
         try:
             # Execute the SQL file
@@ -23,6 +27,6 @@ class DBConnection:
                 sql_script = f.read()
                 #cursor.executescript(sql_script)
                 print(sql_script)  # Print out the SQL script
-                #cursor.executescript(sql_script)
+                cursor.executescript(sql_script) 
         except sqlite3.OperationalError as e:
             print(f"Error executing SQL script: {e}")

@@ -16,7 +16,7 @@ def read_root():
 
 
 @app.get("/weather/{city}")
-async def get_weather(city: str):
+async def get_weather(city: str):  
 
     data = WeatherData(city)
     response = pull_data(city)
