@@ -3,9 +3,9 @@
 | To Do                                                          |   Completed                   |
 |----------------------------------------------------------------|-------------------------------|
 |                                                                |                               |
-| - RESTful API to serve weather data (ideally Python / Fastapi) |                               |
+| - RESTful API to serve weather data (ideally Python / Fastapi) |   Completed                   |
 |                                                                |                               |
-| - Create a GET endpoint to return the minimum, maximum,        |                               |
+| - Create a GET endpoint to return the minimum, maximum,        |   Completed                   |
 |     average temperature, and humidity                          |                               |
 |     for a given city and day from the openweather  api         |                               |
 |     o http://openweathermap.org/api                            |                               |
@@ -14,7 +14,7 @@
 |     and average temperature from the                           |                               |
 |     created RESTful API                                        |                               |
 |                                                                |                               |
-| - Use git for version control and publish on GitHub            |                               |
+| - Use git for version control and publish on GitHub            |   Completed                   |
 |                                                                |                               |
 | - Unit tests (ideally using pytest)                            |                               |
 |                                                                |                               |
