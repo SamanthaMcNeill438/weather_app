@@ -8,7 +8,7 @@ import WeatherData
 
 
 app = FastAPI()
-params = config.get_params(city)
+
 
 @app.get("/")
 def read_root():
