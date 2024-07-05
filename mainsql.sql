@@ -1,6 +1,4 @@
 -- CREATE DATABASE WEATHERAPP
-
-
 -- DROP TABLE Weather
 
 -- Create Table
