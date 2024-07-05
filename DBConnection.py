@@ -1,7 +1,7 @@
 import configparser
 import DBConnection
 import WeatherDataV1
-import mainsql
+# import mainsql
 import main
 import sqlite3 
 
@@ -16,8 +16,13 @@ class DBConnection:
     def initialise_database(self):
         # Create a cursor object
         cursor = self.dbconnection.cursor()
-
-        # Execute the SQL file
-        with open('schema.sql', 'r') as f:
-            sql_script = f.read()
-            cursor.executescript(mainsql.sql)
+        
+        try:
+            # Execute the SQL file
+            with open('mainsql.sql', 'r') as f:
+                sql_script = f.read()
+                #cursor.executescript(sql_script)
+                print(sql_script)  # Print out the SQL script
+                #cursor.executescript(sql_script)
+        except sqlite3.OperationalError as e:
+            print(f"Error executing SQL script: {e}")

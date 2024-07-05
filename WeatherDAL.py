@@ -1,4 +1,5 @@
 import DBConnection
+from DBConnection import DBConnection
 import WeatherData
 import sqlite3 
 
