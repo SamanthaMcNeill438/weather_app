@@ -9,6 +9,7 @@ import config
 
 class MyTestCase(unittest.TestCase):
 
+
     def test_read_main(self):
         client = TestClient(app)
         response = client.get("/")
@@ -93,3 +94,5 @@ class MyTestCase(unittest.TestCase):
 #             "humidity:": 70
 #         }
 #         assert get_data(weather_data) == expected_result
+
+
