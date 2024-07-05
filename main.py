@@ -43,7 +43,7 @@ async def get_weather(city: str):
 def get_data(weather_data):
     min_temp = weather_data["main"]["temp_min"]
     max_temp = weather_data["main"]["temp_max"]
-    avg_temp = round(((min_temp + max_temp)/2),2)
+    avg_temp = round(((min_temp + max_temp)/2),2) 
     humidity = weather_data["main"]["humidity"]
     
     # data = WeatherData(min_temp, max_temp, humidity)
