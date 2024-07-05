@@ -32,3 +32,83 @@
 |                                                                |                               |
 |________________________________________________________________|_______________________________|
  
+
+
+
+
+
+
+
+Example Tests
+--------------------------------------------------------------------------------------------------
+import pyres
+from fastapi.testclient import TestClient
+from main import app, get_data
+
+client = TestClient(app)
+
+def test_read_root():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"Hello": "World"}
+
+def test_get_weather_success(monkeypatch):
+    class MockResponse:
+        @staticmethod
+        def json():
+            return {
+                "cod": "200",
+                "main": {
+                    "temp_min": 15.0,
+                    "temp_max": 25.0,
+                    "humidity": 80
+                }
+            }
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr("requests.get", mock_get)
+    response = client.get("/weather/London")
+    assert response.status_code == 200
+    assert response.json() == {
+        "min temp:": 15.0,
+        "max temp:": 25.0,
+        "avg temp:": 20.0,
+        "humidity:": 80
+    }
+
+def test_get_weather_city_not_found(monkeypatch):
+    class MockResponse:
+        @staticmethod
+        def json():
+            return {"cod": "404", "message": "city not found"}
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr("requests.get", mock_get)
+    response = client.get("/weather/InvalidCity")
+    assert response.status_code == 200
+    assert response.json() == {
+        "min temp:": None,
+        "max temp:": None,
+        "avg temp:": None,
+        "humidity:": None
+    }
+
+def test_get_data():
+    weather_data = {
+        "main": {
+            "temp_min": 10.0,
+            "temp_max": 20.0,
+            "humidity": 70
+        }
+    }
+    expected_result = {
+        "min temp:": 10.0,
+        "max temp:": 20.0,
+        "avg temp:": 15.0,
+        "humidity:": 70
+    }
+    assert get_data(weather_data) == expected_result
