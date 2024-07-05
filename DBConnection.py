@@ -1,7 +1,12 @@
 import configparser
 
 class DBConnection:
+    
+    
     _connection_string = "mainsql.sql"
+
+    # dbconnection = mysql.connector.connect(host = "<host-name> ", user = "<username>" , passwd = "<password>" )  
+    # my_cursor = dbconnection.cursor()
 
     @classmethod
     def connection_string(cls):
