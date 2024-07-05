@@ -12,3 +12,4 @@ class WeatherDAL:
         # create add data functuion
         # create delete data function
         # create update function    
+        #  create searches/queries
