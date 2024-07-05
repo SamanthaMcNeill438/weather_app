@@ -9,8 +9,6 @@ import config
 
 class MyTestCase(unittest.TestCase):
 
-
-
     def test_read_main(self):
         client = TestClient(app)
         response = client.get("/")
@@ -51,3 +49,47 @@ class MyTestCase(unittest.TestCase):
         assert response.json()["main"]["temp_min"] < 80
         assert response.json()["main"]["temp_max"] < 80
         assert response.json()["main"]["temp"] < 80
+
+
+# def test_get_weather_success(monkeypatch):
+#     client = TestClient(app)
+#     class MockResponse:
+#         @staticmethod
+#         def json():
+#             return {
+#                 "cod": "200",
+#                 "main": {
+#                     "temp_min": 15.0,
+#                     "temp_max": 25.0,
+#                     "humidity": 80
+#                 }
+#             }
+
+#     def mock_get(*args, **kwargs):
+#         return MockResponse()
+
+#     monkeypatch.setattr("requests.get", mock_get)
+#     response = client.get("/weather/London")
+#     assert response.status_code == 200
+#     assert response.json() == {
+#         "min temp:": 15.0,
+#         "max temp:": 25.0,
+#         "avg temp:": 20.0,
+#         "humidity:": 80
+#     }
+
+#     def test_get_data():
+#         weather_data = {
+#             "main": {
+#                 "temp_min": 10.0,
+#                 "temp_max": 20.0,
+#                 "humidity": 70
+#             }
+#         }
+#         expected_result = {
+#             "min temp:": 10.0,
+#             "max temp:": 20.0,
+#             "avg temp:": 15.0,
+#             "humidity:": 70
+#         }
+#         assert get_data(weather_data) == expected_result

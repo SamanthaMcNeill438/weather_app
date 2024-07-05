@@ -1,22 +1,57 @@
 import DBConnection
 import WeatherData
 import main
-# import sqlite3 
+import sqlite3 
 
 class WeatherDAL:
+
+    my_cursor = DBConnection.cursor()
+    City : str
+    Min_Temp : float
+    Max_Temp : float
+    Avg_Temp : float
+    Humidity : float
     
-    def add_weather_data(response):
+
+    def __init__(self, city, min_temp, max_temp, avg_temp, humidity):
+        self.City = city
+        self.Min_Temp = min_temp
+        self.Max_Temp = max_temp
+        self.Avg_Temp = avg_temp
+        self.Humidity = humidity
+
+    
+    def add_weather_data(self):
         connection = DBConnection._connection_string
+        cur = self.my_cursor
+        cur.execute('CALL sp_addData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
+        cur.commit()
+        cur.close()
+        connection.close()
 
-        # connect to database from weather
-        # create add data functuion
-        # create delete data function
-        # create update function    
-        # create searches/queries
 
-    # DATABASE QUERIES 
-    # cur.execute('CALL sp_addData(%s, %d, %d, %d, %d))', (City, Min_Temp, Max_Temp, Avg_Temp, Humiditiy))
-    # cur.execute('CALL sp_searchData(%s))', (City))
-    # cur.execute('CALL sp_updateData(%s, %d, %d, %d, %d))', (City, Min_Temp, Max_Temp, Avg_Temp, Humiditiy))
-    # cur.execute('CALL sp_deleteData(%s))', (City))
-    # cur.commit()
+    def search_weather_data(self):
+        connection = DBConnection._connection_string
+        cur = self.my_cursor
+        cur.execute('CALL sp_searchData(%s))', (self.City))
+        cur.commit()
+        cur.close()
+        connection.close()
+
+
+    def update_weather_data(self):
+        connection = DBConnection._connection_string
+        cur = self.my_cursor
+        cur.execute('CALL sp_updateData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
+        cur.commit()
+        cur.close()
+        connection.close()
+
+
+    def delete_weather_data(self):
+        connection = DBConnection._connection_string
+        cur = self.my_cursor
+        cur.execute('CALL sp_deleteData(%s))', (self.City))
+        cur.commit()
+        cur.close()
+        connection.close()
