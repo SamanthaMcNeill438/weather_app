@@ -1,6 +1,7 @@
 import DBConnection
 from DBConnection import DBConnection
 import WeatherData
+from mainsql import sql_delete, sql_insert, sql_select, sql_update
 import sqlite3 
 
 class WeatherDAL:
@@ -23,16 +24,21 @@ class WeatherDAL:
         self.Max_Temp = max_temp
         self.Avg_Temp = avg_temp
         self.Humidity = humidity
+        self.db_connection = DBConnection()
+        self.my_cursor = self.db_connection.cursor()
+
 
     
     def __init__(self, city):
         self.City = city
-
+        self.db_connection = DBConnection()
+        self.my_cursor = self.db_connection.cursor()
+        
 
     def add_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL mainsql.sp_addData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
+        cur.execute(sql_insert, (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
         cur.commit()
         cur.close()
         connection.close()
@@ -41,7 +47,7 @@ class WeatherDAL:
     def search_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL mainsql.sp_searchData(%s))', (self.City))
+        cur.execute(sql_select, (self.City))
         cur.commit()
         cur.close()
         connection.close()
@@ -50,7 +56,7 @@ class WeatherDAL:
     def update_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL mainsql.sp_updateData(%s, %f, %f, %f, %f))', (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
+        cur.execute(sql_update, (self.City, self.Min_Temp, self.Max_Temp, self.Avg_Temp, self.Humidity))
         cur.commit()
         cur.close()
         connection.close()
@@ -59,7 +65,7 @@ class WeatherDAL:
     def delete_weather_data(self):
         connection = self.connection
         cur = self.my_cursor
-        cur.execute('CALL mainsql.sp_deleteData(%s))', (self.City))
+        cur.execute(sql_delete, (self.City))
         cur.commit()
         cur.close()
         connection.close()

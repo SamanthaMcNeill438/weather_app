@@ -117,3 +117,83 @@ Here's how you can modify your code to create the table and execute the SQL stat
     # Close the connection
     conn.close()
 This code creates a table Weather if it does not exist, inserts a record, searches for a record, updates a record, and deletes a record. Note that the ? placeholders are used for parameterized queries, which help prevent SQL injection attacks.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+The error message indicates that the DBConnection object has no attribute connection. This is because you are trying to access the connection attribute before it is initialized.
+
+In your DBConnection class, you have a method initialise_database that tries to access self.connection before it is initialized. You should initialize the connection attribute before trying to access it.
+
+Here's an example of how you can modify your DBConnection class:
+    class DBConnection:
+        def __init__(self):
+            self.connection = None
+
+        def initialise_database(self):
+            self.connection = sqlite3.connect('weather_app.db')
+            cursor = self.connection.cursor()
+            # rest of your code
+In this example, I've added an __init__ method to initialize the connection attribute as None. Then, in the initialise_database method, I've assigned the connection to the self.connection attribute before trying to access it.
+
+Make sure to commit your changes and close the connection when you're done with it to avoid any potential issues.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+The error message indicates that the DBConnection object has no attribute my_cursor. This is because you are trying to access the my_cursor attribute before it is initialized.
+
+In your DBConnection class, you have a method initialise_database that tries to access self.my_cursor before it is initialized. You should initialize the my_cursor attribute before trying to access it.
+
+Here's an example of how you can modify your DBConnection class:
+
+    class DBConnection:
+        def __init__(self):
+            self.connection = None
+            self.my_cursor = None
+
+        def initialise_database(self):
+            self.connection = sqlite3.connect('weather_app.db')
+            self.my_cursor = self.connection.cursor()
+            # rest of your code
+In this example, I've added an __init__ method to initialize the my_cursor attribute as None. Then, in the initialise_database method, I've assigned the cursor to the self.my_cursor attribute before trying to access it.
+
+Make sure to commit your changes and close the connection when you're done with it to avoid any potential issues.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+The error message indicates that you are trying to call the execute method on a None object. This is because the cur variable is None when you try to call cur.execute(self.sql.sql_create).
+
+This is likely because the self.my_cursor attribute is not being initialized correctly in the initialise_database method.
+
+Here's an example of how you can modify your DBConnection class:
+
+    class DBConnection:
+        def __init__(self):
+            self.connection = None
+            self.my_cursor = None
+
+        def initialise_database(self):
+            self.connection = sqlite3.connect('weather_app.db')
+            self.my_cursor = self.connection.cursor()  # Initialize the cursor
+            self.my_cursor.execute(self.sql.sql_create)  # Now you can call execute on the cursor
+In this example, I've added the line self.my_cursor = self.connection.cursor() to initialize the my_cursor attribute. Now, when you call self.my_cursor.execute(self.sql.sql_create), it should work correctly.
+
+Make sure to commit your changes and close the connection when you're done with it to avoid any potential issues.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
