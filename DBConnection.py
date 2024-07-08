@@ -7,8 +7,8 @@ import sqlite3
 
 class DBConnection:
 
-    db_conn = DBConnection()
-    my_cursor = db_conn.my_cursor
+    # db_conn = DBConnection()
+    my_cursor : object
 
     def __init__(self):
         self.dbconnection = sqlite3.connect('WeatherApp.db')

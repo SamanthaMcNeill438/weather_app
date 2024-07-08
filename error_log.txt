@@ -1,1 +1,44 @@
-Cursor is not found in DBConnection
+The error message indicates that the DBConnection class has no attribute cursor. This is because you're trying to use DBConnection as if it were a database connection object, but it's actually a class.
+In your WeatherDAL.py file, you're trying to create a cursor object with my_cursor = DBConnection.cursor(). However, DBConnection is a class, not a database connection object.
+
+To fix this, you need to create an instance of the DBConnection class and then call the cursor() method on that instance. Here's an example:
+
+    class WeatherDAL:
+        def __init__(self):
+            self.db_connection = DBConnection()  # Create an instance of DBConnection
+            self.my_cursor = self.db_connection.cursor()  # Call cursor() on the instance
+
+By creating an instance of DBConnection and then calling cursor() on that instance, you should be able to access the cursor object.
+
+Additionally, I noticed that your SQL script has some issues. The CREATE PROCEDURE statements are not valid SQL syntax for creating stored procedures in all databases. The syntax may vary depending on the database management system you're using.
+If you're using SQLite, you don't need to create stored procedures. You can simply execute the SQL queries directly. If you're using a different database system, please provide more information about the database and I can help you with the correct syntax.
+SQLite does not support stored procedures like other relational databases. It does not have a built-in mechanism to create and execute stored procedures.
+
+However, you can achieve similar functionality using other methods:
+    SQL Views: SQLite supports views, which are virtual tables based on the result of a SELECT statement. You can create a view to encapsulate a complex query, and then query the view like a regular table.
+    User-Defined Functions (UDFs): SQLite allows you to create UDFs using Python or other languages. UDFs can be used to perform complex calculations or data transformations.
+    Parameterized Queries: You can use parameterized queries to execute SQL statements with dynamic values. This can help to avoid SQL injection attacks and improve performance.
+
+Here's an example of how you can use parameterized queries in Python with SQLite:
+
+    import sqlite3
+
+    # Create a connection to the database
+    conn = sqlite3.connect('weather_app.db')
+    cursor = conn.cursor()
+
+    # Create a parameterized query
+    query = "SELECT * FROM Weather WHERE City =?"
+    city = "New York"
+
+    # Execute the query with the parameter
+    cursor.execute(query, (city,))
+
+    # Fetch the results
+    results = cursor.fetchall()
+
+    # Close the connection
+    conn.close()
+
+In this example, the ? placeholder is used to specify the parameter, and the city variable is passed as a tuple to the execute() method.
+While SQLite does not support stored procedures, you can use these alternative methods to achieve similar functionality and improve the maintainability and performance of your database interactions.
