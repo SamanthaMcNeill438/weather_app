@@ -1,3 +1,10 @@
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 smceill@Keith-Cs-MacBook-Pro weatherAPIApp % python3 -m uvicorn mainV2:app --reload                                       
 INFO:     Will watch for changes in these directories: ['/Users/smceill/Documents/weatherAPIApp']
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
