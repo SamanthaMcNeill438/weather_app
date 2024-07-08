@@ -48,5 +48,5 @@ def pull_data(city):
     if weather_data["cod"] != "200": 
         #HTTPException(status_code=weather_data, detail='An error occured')
         #return {"City not found"}
-        print("stopped working")    
+        print("stopped working")     
     return weather_data
