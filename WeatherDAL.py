@@ -10,7 +10,7 @@ class WeatherDAL:
     connect.initialise_database()
     connection = connect.get_connection_string()
     
-    #my_cursor = DBConnection.cursor()
+    my_cursor = DBConnection.cursor()
     City : str
     Min_Temp : float
     Max_Temp : float

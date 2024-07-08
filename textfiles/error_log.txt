@@ -3,3 +3,202 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+The error message indicates that the DBConnection class has no attribute cursor. This is because you're trying to use DBConnection as if it were a database connection object, but it's actually a class.
+In your WeatherDAL.py file, you're trying to create a cursor object with my_cursor = DBConnection.cursor(). However, DBConnection is a class, not a database connection object.
+
+To fix this, you need to create an instance of the DBConnection class and then call the cursor() method on that instance. Here's an example:
+
+    class WeatherDAL:
+        def __init__(self):
+            self.db_connection = DBConnection()  # Create an instance of DBConnection
+            self.my_cursor = self.db_connection.cursor()  # Call cursor() on the instance
+
+By creating an instance of DBConnection and then calling cursor() on that instance, you should be able to access the cursor object.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Additionally, I noticed that your SQL script has some issues. The CREATE PROCEDURE statements are not valid SQL syntax for creating stored procedures in all databases. The syntax may vary depending on the database management system you're using.
+If you're using SQLite, you don't need to create stored procedures. You can simply execute the SQL queries directly. If you're using a different database system, please provide more information about the database and I can help you with the correct syntax.
+SQLite does not support stored procedures like other relational databases. It does not have a built-in mechanism to create and execute stored procedures.
+
+However, you can achieve similar functionality using other methods:
+    SQL Views: SQLite supports views, which are virtual tables based on the result of a SELECT statement. You can create a view to encapsulate a complex query, and then query the view like a regular table.
+    User-Defined Functions (UDFs): SQLite allows you to create UDFs using Python or other languages. UDFs can be used to perform complex calculations or data transformations.
+    Parameterized Queries: You can use parameterized queries to execute SQL statements with dynamic values. This can help to avoid SQL injection attacks and improve performance.
+
+Here's an example of how you can use parameterized queries in Python with SQLite:
+
+    import sqlite3
+
+    # Create a connection to the database
+    conn = sqlite3.connect('weather_app.db')
+    cursor = conn.cursor()
+
+    # Create a parameterized query
+    query = "SELECT * FROM Weather WHERE City =?"
+    city = "New York"
+
+    # Execute the query with the parameter
+    cursor.execute(query, (city,))
+
+    # Fetch the results
+    results = cursor.fetchall()
+
+    # Close the connection
+    conn.close()
+
+In this example, the ? placeholder is used to specify the parameter, and the city variable is passed as a tuple to the execute() method.
+While SQLite does not support stored procedures, you can use these alternative methods to achieve similar functionality and improve the maintainability and performance of your database interactions.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+The error message indicates that there is a syntax error near the CREATE statement. This is because SQLite does not support stored procedures like other relational databases.
+
+Here's how you can modify your code to create the table and execute the SQL statements:
+    import sqlite3
+
+    # Create a connection to the database
+    conn = sqlite3.connect('weather_app.db')
+    cursor = conn.cursor()
+
+    # Create Table
+    sql_script = """
+    CREATE TABLE IF NOT EXISTS Weather(
+        City TEXT NOT NULL,
+        Min_Temp REAL NOT NULL,
+        Max_Temp REAL NOT NULL,
+        Avg_Temp REAL NOT NULL, 
+        Humidity REAL NOT NULL,
+        PRIMARY KEY (City)
+    );
+    """
+
+    cursor.executescript(sql_script)
+
+    # Add record to the database
+    sql_script = """
+    INSERT INTO Weather(City, Min_Temp, Max_Temp, Avg_Temp, Humidity)
+    VALUES (?,?,?,?,?);
+    """
+
+    cursor.execute(sql_script, ('New York', 10.0, 20.0, 15.0, 60.0))
+
+    # Search database for record where city == user specified value
+    sql_script = """
+    SELECT Min_Temp, Max_Temp, Avg_Temp, Humidity 
+    FROM Weather 
+    WHERE City LIKE?;
+    """
+
+    cursor.execute(sql_script, ('New York',))
+
+    # Search database for record to update data
+    sql_script = """
+    UPDATE Weather
+    SET Min_Temp =?, Max_Temp =?, Avg_Temp =?, Humidity =?
+    WHERE City LIKE?;
+    """
+
+    cursor.execute(sql_script, (10.0, 20.0, 15.0, 60.0, 'New York'))
+
+    # Search database for record where city == user specified value, if found delete record
+    sql_script = """
+    DELETE FROM Weather WHERE City LIKE?;
+    """
+
+    cursor.execute(sql_script, ('New York',))
+
+    # Commit the changes
+    conn.commit()
+
+    # Close the connection
+    conn.close()
+This code creates a table Weather if it does not exist, inserts a record, searches for a record, updates a record, and deletes a record. Note that the ? placeholders are used for parameterized queries, which help prevent SQL injection attacks.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+The error message indicates that the DBConnection object has no attribute connection. This is because you are trying to access the connection attribute before it is initialized.
+
+In your DBConnection class, you have a method initialise_database that tries to access self.connection before it is initialized. You should initialize the connection attribute before trying to access it.
+
+Here's an example of how you can modify your DBConnection class:
+    class DBConnection:
+        def __init__(self):
+            self.connection = None
+
+        def initialise_database(self):
+            self.connection = sqlite3.connect('weather_app.db')
+            cursor = self.connection.cursor()
+            # rest of your code
+In this example, I've added an __init__ method to initialize the connection attribute as None. Then, in the initialise_database method, I've assigned the connection to the self.connection attribute before trying to access it.
+
+Make sure to commit your changes and close the connection when you're done with it to avoid any potential issues.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+The error message indicates that the DBConnection object has no attribute my_cursor. This is because you are trying to access the my_cursor attribute before it is initialized.
+
+In your DBConnection class, you have a method initialise_database that tries to access self.my_cursor before it is initialized. You should initialize the my_cursor attribute before trying to access it.
+
+Here's an example of how you can modify your DBConnection class:
+
+    class DBConnection:
+        def __init__(self):
+            self.connection = None
+            self.my_cursor = None
+
+        def initialise_database(self):
+            self.connection = sqlite3.connect('weather_app.db')
+            self.my_cursor = self.connection.cursor()
+            # rest of your code
+In this example, I've added an __init__ method to initialize the my_cursor attribute as None. Then, in the initialise_database method, I've assigned the cursor to the self.my_cursor attribute before trying to access it.
+
+Make sure to commit your changes and close the connection when you're done with it to avoid any potential issues.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+The error message indicates that you are trying to call the execute method on a None object. This is because the cur variable is None when you try to call cur.execute(self.sql.sql_create).
+
+This is likely because the self.my_cursor attribute is not being initialized correctly in the initialise_database method.
+
+Here's an example of how you can modify your DBConnection class:
+
+    class DBConnection:
+        def __init__(self):
+            self.connection = None
+            self.my_cursor = None
+
+        def initialise_database(self):
+            self.connection = sqlite3.connect('weather_app.db')
+            self.my_cursor = self.connection.cursor()  # Initialize the cursor
+            self.my_cursor.execute(self.sql.sql_create)  # Now you can call execute on the cursor
+In this example, I've added the line self.my_cursor = self.connection.cursor() to initialize the my_cursor attribute. Now, when you call self.my_cursor.execute(self.sql.sql_create), it should work correctly.
+
+Make sure to commit your changes and close the connection when you're done with it to avoid any potential issues.
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+

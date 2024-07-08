@@ -1,7 +1,7 @@
 import configparser
 import DBConnection
 import WeatherData
-from mainsql import sql_create, sql_drop
+from mainsql import sql_create
 import main
 import sqlite3 
 
@@ -28,8 +28,7 @@ class DBConnection:
             # Execute the SQL file
             with open('mainsql.py', 'r') as f:
                 self.connection = sqlite3.connect('weather_app.db')
-                self.my_cursor = self.connection.cursor()  
-                self.my_cursor.execute(sql_drop)# Initialize the cursor
+                self.my_cursor = self.connection.cursor()  # Initialize the cursor
                 self.my_cursor.execute(sql_create)  # Now you can call execute on the cursor
         except sqlite3.OperationalError as e:
             print(f"Error executing SQL script: {e}")
